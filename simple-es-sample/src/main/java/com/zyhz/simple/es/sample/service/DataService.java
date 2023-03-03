@@ -22,7 +22,7 @@ public class DataService {
     @Resource
     BasedQueryES basedQueryES;
 
-    public List<Data> getData() throws IOException {
+    public List<Data> getData1() throws IOException {
         QueryWrapper warper = QueryWrapper.create()
                 .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
                 .addAllSource("state_code,co2")
@@ -32,5 +32,15 @@ public class DataService {
         List<Data> list =  basedQueryES.baseQuery(warper);
         return list;
 
+    }
+
+    public List<Data> getData2() throws IOException {
+        QueryWrapper wrapper = QueryWrapper.create()
+                .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
+                .groupBy(true, "state_code", "state_code")
+                .sum(true, "co2", "co2")
+                .addGeneric(Data.class);
+        List<Data> list =  basedQueryES.aggregationQuery(wrapper);
+        return list;
     }
 }

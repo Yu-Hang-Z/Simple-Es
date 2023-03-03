@@ -26,11 +26,22 @@ public class DataController {
     @Autowired
     private DataService dataService;
 
-    @RequestMapping("getList")
-    public List<Data> insert() {
+    @RequestMapping("getList1")
+    public List<Data> getList1() {
         List<Data> list = new ArrayList<Data>();
         try {
-            list = dataService.getData();
+            list = dataService.getData1();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    @RequestMapping("getList2")
+    public List<Data> getList2() {
+        List<Data> list = new ArrayList<Data>();
+        try {
+            list = dataService.getData2();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
