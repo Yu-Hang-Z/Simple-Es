@@ -187,34 +187,6 @@ public class ReflectUtils
         return null;
     }
 
-    /**
-     * 循环向上转型, 获取对象的DeclaredMethod,并强制设置为可访问.
-     * 如向上转型到Object仍无法找到, 返回null.
-     * 只匹配函数名。
-     * 用于方法需要被多次调用的情况. 先使用本函数先取得Method,然后调用Method.invoke(Object obj, Object... args)
-     */
-    public static Method getAccessibleMethodByName(final Object obj, final String methodName, int argsNum)
-    {
-        // 为空不报错。直接返回 null
-        if (obj == null)
-        {
-            return null;
-        }
-        Validate.notEmpty(methodName, "methodName can't be blank");
-        for (Class<?> searchType = obj.getClass(); searchType != Object.class; searchType = searchType.getSuperclass())
-        {
-            Method[] methods = searchType.getDeclaredMethods();
-            for (Method method : methods)
-            {
-                if (method.getName().equals(methodName) && method.getParameterTypes().length == argsNum)
-                {
-                    makeAccessible(method);
-                    return method;
-                }
-            }
-        }
-        return null;
-    }
 
     /**
      * 改变private/protected的方法为public，尽量不调用实际改动的语句，避免JDK的SecurityManager抱怨。

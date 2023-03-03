@@ -1,7 +1,7 @@
-package com.zyhz.simple.es.common.utils.model;
+package com.zyhz.simple.es.common.model;
 
 
-import com.zyhz.simple.es.common.utils.enums.ConditionType;
+import com.zyhz.simple.es.common.enums.ConditionType;
 import lombok.*;
 
 /**

@@ -3,8 +3,8 @@ package com.zyhz.simple.es.core.conditions;
 
 
 
-import com.zyhz.simple.es.common.utils.enums.ConditionType;
-import com.zyhz.simple.es.common.utils.model.BasedQueryCondition;
+import com.zyhz.simple.es.common.enums.ConditionType;
+import com.zyhz.simple.es.common.model.BasedQueryCondition;
 import com.zyhz.simple.es.core.base.BasedQueryES;
 import lombok.Getter;
 import lombok.Setter;

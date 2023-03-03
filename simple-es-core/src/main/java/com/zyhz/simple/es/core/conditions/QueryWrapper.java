@@ -2,7 +2,7 @@ package com.zyhz.simple.es.core.conditions;
 
 
 
-import com.zyhz.simple.es.common.utils.enums.ConditionType;
+import com.zyhz.simple.es.common.enums.ConditionType;
 import com.zyhz.simple.es.core.conditions.interfaces.Func;
 import org.apache.commons.lang3.ObjectUtils;
 

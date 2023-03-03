@@ -1,4 +1,4 @@
-package com.zyhz.simple.es.common.utils.enums;
+package com.zyhz.simple.es.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
