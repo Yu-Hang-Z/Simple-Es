@@ -2,7 +2,7 @@ package com.zyhz.simple.es.core.conditions;
 
 
 
-import com.zyhz.simple.es.common.utils.model.BasedQueryCondition;
+import com.zyhz.simple.es.common.utils.enums.ConditionType;
 import com.zyhz.simple.es.core.conditions.interfaces.Func;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -30,7 +30,7 @@ public class QueryWrapper<T> extends EsBasedQuery
     @Override
     public QueryWrapper<T> not(boolean condition, String column, Object field) {
         if (condition){
-            this.addQueryCondition(BasedQueryCondition.ConditionType.NOT_EQUALS.getType(), column, field);
+            this.addQueryCondition(ConditionType.NOT_EQUALS.getType(), column, field);
         }
         return this;
     }
@@ -38,7 +38,7 @@ public class QueryWrapper<T> extends EsBasedQuery
     @Override
     public QueryWrapper<T> equals(boolean condition, String column, Object field) {
         if (condition){
-            this.addQueryCondition(BasedQueryCondition.ConditionType.EQUALS.getType(), column, field);
+            this.addQueryCondition(ConditionType.EQUALS.getType(), column, field);
         }
         return this;
     }
@@ -46,7 +46,7 @@ public class QueryWrapper<T> extends EsBasedQuery
     @Override
     public QueryWrapper in(boolean condition, String column, Object val) {
         if(condition && !ObjectUtils.isEmpty(val)){
-            this.addQueryCondition(BasedQueryCondition.ConditionType.IN.getType(), column, val);
+            this.addQueryCondition(ConditionType.IN.getType(), column, val);
         }
         return this;
     }
@@ -57,7 +57,7 @@ public class QueryWrapper<T> extends EsBasedQuery
             Map<String, Object> map = new HashMap<>();
             map.put("from", from);
             map.put("to", to);
-            this.addQueryCondition(BasedQueryCondition.ConditionType.FROM_TO.getType(), field, map);
+            this.addQueryCondition(ConditionType.FROM_TO.getType(), field, map);
         }
         return this;
     }
@@ -115,6 +115,20 @@ public class QueryWrapper<T> extends EsBasedQuery
     public QueryWrapper setQueryIndex(boolean condition,String index){
         if (condition && index != null){
             this.setIndex(index);
+        }
+        return this;
+    }
+
+    public QueryWrapper setQuerySize(boolean condition,Integer size){
+        if (condition && size != null){
+            this.setSize(size);
+        }
+        return this;
+    }
+
+    public QueryWrapper setQueryFrom(boolean condition,Integer from){
+        if (condition && from != null){
+            this.setFrom(from);
         }
         return this;
     }

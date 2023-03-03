@@ -4,6 +4,7 @@ package com.zyhz.simple.es.core.base;
 
 import com.alibaba.fastjson2.JSON;
 import com.zyhz.simple.es.common.utils.ReflectUtils;
+import com.zyhz.simple.es.common.utils.enums.ConditionType;
 import com.zyhz.simple.es.common.utils.model.BasedQueryCondition;
 import com.zyhz.simple.es.core.conditions.EsBasedQuery;
 import org.elasticsearch.action.search.SearchRequest;
@@ -21,6 +22,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,7 +33,7 @@ import java.util.*;
 /**
  * @author by zhangyuhang
  */
-@Service
+@Repository
 public class BasedQueryES<T> {
 
     @Resource
@@ -94,24 +96,27 @@ public class BasedQueryES<T> {
 
     private BoolQueryBuilder creatQuery(List<BasedQueryCondition> conditions){
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+        if (conditions == null || conditions.size() == 0){
+            return queryBuilder;
+        }
         for (BasedQueryCondition condition : conditions){
-            if (BasedQueryCondition.ConditionType.EQUALS.getType().equals( condition.getConditionType().getType())){
+            if (ConditionType.EQUALS.getType().equals( condition.getConditionType().getType())){
                 Object values = condition.getValue();
                 queryBuilder.filter(QueryBuilders.termsQuery(condition.getField(), values));
             }
-            if (BasedQueryCondition.ConditionType.IN.getType().equals( condition.getConditionType().getType())){
+            if (ConditionType.IN.getType().equals( condition.getConditionType().getType())){
                 String values = (String) condition.getValue();
                 Object[] arr = Arrays.stream(values.split(",")).toArray();
                 queryBuilder.filter(QueryBuilders.termsQuery(condition.getField(), arr));
             }
-            if (BasedQueryCondition.ConditionType.FROM_TO.getType().equals( condition.getConditionType().getType())){
+            if (ConditionType.FROM_TO.getType().equals( condition.getConditionType().getType())){
                 Map<String, Object> rangeMap = (Map<String, Object>) condition.getValue();
                 queryBuilder.filter(QueryBuilders.
                         rangeQuery(condition.getField())
                         .from(rangeMap.get("from"))
                         .to(rangeMap.get("to")));
             }
-            if (BasedQueryCondition.ConditionType.NOT_EQUALS.getType().equals( condition.getConditionType().getType())){
+            if (ConditionType.NOT_EQUALS.getType().equals( condition.getConditionType().getType())){
                 Object values = condition.getValue();
                 queryBuilder.mustNot(QueryBuilders.termsQuery(condition.getField(), values));
             }

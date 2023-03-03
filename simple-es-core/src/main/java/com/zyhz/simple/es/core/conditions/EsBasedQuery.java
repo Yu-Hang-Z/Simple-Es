@@ -3,6 +3,7 @@ package com.zyhz.simple.es.core.conditions;
 
 
 
+import com.zyhz.simple.es.common.utils.enums.ConditionType;
 import com.zyhz.simple.es.common.utils.model.BasedQueryCondition;
 import com.zyhz.simple.es.core.base.BasedQueryES;
 import lombok.Getter;
@@ -102,7 +103,7 @@ public class EsBasedQuery<T> {
         if (value == null){
             return;
         }
-        this.basedQueryConditions.add(new BasedQueryCondition(BasedQueryCondition.ConditionType.getConditionType(conditionType),field,value));
+        this.basedQueryConditions.add(new BasedQueryCondition(ConditionType.getConditionType(conditionType),field,value));
     }
 
     public void addFetchSource(String field){

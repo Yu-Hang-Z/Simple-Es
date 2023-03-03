@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+# 应用名称
+spring:
+  application:
+    name : simple-es-sample
+  elasticsearch:
+    uris: http://10.10.18.10:9200
+
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      fail-on-empty-beans: false
+
+
+
+
