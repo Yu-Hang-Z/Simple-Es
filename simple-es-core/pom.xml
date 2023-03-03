@@ -12,6 +12,12 @@
     <artifactId>simple-es-core</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.zyhz</groupId>
+            <artifactId>simple-es-common</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>
