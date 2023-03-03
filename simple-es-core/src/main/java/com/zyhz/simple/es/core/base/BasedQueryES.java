@@ -3,9 +3,11 @@ package com.zyhz.simple.es.core.base;
 
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.zyhz.simple.es.common.utils.MathUtils;
 import com.zyhz.simple.es.common.utils.ReflectUtils;
-import com.zyhz.simple.es.common.utils.enums.ConditionType;
-import com.zyhz.simple.es.common.utils.model.BasedQueryCondition;
+import com.zyhz.simple.es.common.enums.ConditionType;
+import com.zyhz.simple.es.common.model.BasedQueryCondition;
 import com.zyhz.simple.es.core.conditions.EsBasedQuery;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -23,7 +25,6 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -200,7 +201,7 @@ public class BasedQueryES<T> {
             ReflectUtils.setFieldValue(instanceOfT, fieldName, String.valueOf(value));
         }
         if ("java.math.BigDecimal".equals(fieldType)){
-            ReflectUtils.setFieldValue(instanceOfT, fieldName, BigDecimal.valueOf((Double) value));
+            ReflectUtils.setFieldValue(instanceOfT, fieldName, MathUtils.getBigDecimal(value));
         }
 
     }
@@ -241,6 +242,7 @@ public class BasedQueryES<T> {
             Terms childAgg = aggregations.get(childKey);
             // 当前层为最后一层
             if (childAgg == null){
+                basedQueryContext.put("inventoryInfo", inventoryInfo);
                 List<T> esBasedQueryData = analysisLastBuckets(terms, recursionNumber);
                 analysisLevelList.addAll(esBasedQueryData);
                 return esBasedQueryData;
@@ -282,8 +284,13 @@ public class BasedQueryES<T> {
             }
             //聚合计算字段字段
             for (Map.Entry<String, String> entry : sumFields.entrySet()) {
-                BigDecimal value = (BigDecimal) JSON.parseObject(JSON.toJSONString(asMap.get(entry.getValue()))).get("value");
-                ReflectUtils.setFieldValue(instanceOfT, entry.getKey(), value);
+                JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(asMap.get(entry.getKey())));
+                Object value = jsonObject.get("value");
+                //BigDecimal value = (BigDecimal) JSON.parseObject(JSON.toJSONString(asMap.get(entry.getKey()))).get("value");
+                //ReflectUtils.setFieldValue(instanceOfT, entry.getKey(), value);
+
+                String fieldType = ReflectUtils.getFieldType(instanceOfT, entry.getKey());
+                reflectionToFillInData(fieldType, instanceOfT, entry.getKey(), value);
             }
             analysisLastList.add(instanceOfT);
         }
