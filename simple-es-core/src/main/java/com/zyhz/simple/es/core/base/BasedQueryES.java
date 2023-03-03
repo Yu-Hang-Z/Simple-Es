@@ -4,7 +4,6 @@ package com.zyhz.simple.es.core.base;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.zyhz.simple.es.common.utils.MathUtils;
 import com.zyhz.simple.es.common.utils.ReflectUtils;
 import com.zyhz.simple.es.common.enums.ConditionType;
 import com.zyhz.simple.es.common.model.BasedQueryCondition;
@@ -28,7 +27,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.util.*;
 
 /**
@@ -185,8 +184,7 @@ public class BasedQueryES<T> {
                     Map.Entry<String, Object> entry = it.next();
                     for (String field : fetchSource){
                         if (field.equals(entry.getKey())) {
-                            String fieldType = ReflectUtils.getFieldType(instanceOfT, entry.getKey());
-                            reflectionToFillInData(fieldType, instanceOfT, entry.getKey(), entry.getValue());
+                            ReflectUtils.reflectionToFillInData( instanceOfT, entry.getKey(), entry.getValue());
                         }
                     }
                 }
@@ -195,17 +193,6 @@ public class BasedQueryES<T> {
         }
         return list;
     }
-
-    private void reflectionToFillInData(String fieldType, T instanceOfT, String fieldName ,Object value){
-        if ("java.lang.String".equals(fieldType)){
-            ReflectUtils.setFieldValue(instanceOfT, fieldName, String.valueOf(value));
-        }
-        if ("java.math.BigDecimal".equals(fieldType)){
-            ReflectUtils.setFieldValue(instanceOfT, fieldName, MathUtils.getBigDecimal(value));
-        }
-
-    }
-
 
     /**
      * 解析聚合信息
@@ -235,7 +222,6 @@ public class BasedQueryES<T> {
         if (inventoryInfo == null){
             inventoryInfo = new HashMap<>();
         }
-
         for (Terms.Bucket bucket : terms.getBuckets()) {
             Aggregations aggregations = bucket.getAggregations();
             String childKey = bucketPrefix + (recursionNumber + 1);
@@ -280,17 +266,13 @@ public class BasedQueryES<T> {
 
             //聚合分桶字段
             for (Map.Entry<String, String> entry : inventoryInfo.entrySet()) {
-                ReflectUtils.setFieldValue(instanceOfT, entry.getKey(), entry.getValue());
+                ReflectUtils.reflectionToFillInData(instanceOfT, entry.getKey(), entry.getValue());
             }
             //聚合计算字段字段
             for (Map.Entry<String, String> entry : sumFields.entrySet()) {
                 JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(asMap.get(entry.getKey())));
                 Object value = jsonObject.get("value");
-                //BigDecimal value = (BigDecimal) JSON.parseObject(JSON.toJSONString(asMap.get(entry.getKey()))).get("value");
-                //ReflectUtils.setFieldValue(instanceOfT, entry.getKey(), value);
-
-                String fieldType = ReflectUtils.getFieldType(instanceOfT, entry.getKey());
-                reflectionToFillInData(fieldType, instanceOfT, entry.getKey(), value);
+                ReflectUtils.reflectionToFillInData(instanceOfT, entry.getKey(), value);
             }
             analysisLastList.add(instanceOfT);
         }

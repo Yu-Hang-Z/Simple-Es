@@ -76,6 +76,25 @@ public class ReflectUtils
         return field.getType().getName();
     }
 
+    public static <E> void reflectionToFillInData(final Object obj,final String fieldName ,final E value){
+        final String fieldType = getFieldType(obj, fieldName);
+
+        if (value == null) {
+            ReflectUtils.setFieldValue(obj, fieldName, value);
+        }
+        else if ("java.lang.String".equals(fieldType)){
+            ReflectUtils.setFieldValue(obj, fieldName, String.valueOf(value));
+        }
+        else if ("java.lang.Integer".equals(fieldType)){
+
+            ReflectUtils.setFieldValue(obj, fieldName, Integer.parseInt(value.toString()));
+        }
+        else if ("java.math.BigDecimal".equals(fieldType)){
+            ReflectUtils.setFieldValue(obj, fieldName, MathUtils.getBigDecimal(value));
+        }
+
+    }
+
     /**
      * 直接设置对象属性值, 无视private/protected修饰符, 不经过setter函数.
      */
