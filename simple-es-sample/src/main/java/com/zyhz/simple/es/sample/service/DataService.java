@@ -26,7 +26,7 @@ public class DataService {
         QueryWrapper warper = QueryWrapper.create()
                 .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
                 .addAllSource("state_code,co2")
-                .setQuerySize(true, 100)
+                .setQuerySize(true, 5)
                 .setQueryFrom(true, 0)
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.baseQuery(warper);
@@ -38,7 +38,7 @@ public class DataService {
         QueryWrapper wrapper = QueryWrapper.create()
                 .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
                 .groupBy(true, "state_code", "state_code")
-                .sum(true, "co2", "co2")
+                .sum(true, "co2", "co_catipa")
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.aggregationQuery(wrapper);
         return list;
