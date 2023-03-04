@@ -47,4 +47,15 @@ public class DataController {
         }
         return list;
     }
+
+    @RequestMapping("getList3")
+    public List<Data> getList3() {
+        List<Data> list = new ArrayList<Data>();
+        try {
+            list = dataService.getData3();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
 }
