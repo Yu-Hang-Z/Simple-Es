@@ -61,6 +61,37 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    @Override
+    public QueryWrapper<T> gt(boolean condition, String column, Object field) {
+        if (condition){
+            this.addQueryCondition(ConditionType.GT.getType(), column, field);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryWrapper<T> gte(boolean condition, String column, Object field) {
+        if (condition){
+            this.addQueryCondition(ConditionType.GTE.getType(), column, field);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryWrapper<T> lt(boolean condition, String column, Object field) {
+        if (condition){
+            this.addQueryCondition(ConditionType.LT.getType(), column, field);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryWrapper<T> lte(boolean condition, String column, Object field) {
+        if (condition){
+            this.addQueryCondition(ConditionType.LTE.getType(), column, field);
+        }
+        return this;
+    }
 
     public QueryWrapper groupBy(boolean condition, String columns, String field){
         if (condition && columns != null && field != null){

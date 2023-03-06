@@ -19,6 +19,14 @@ public enum ConditionType {
 
     FROM_TO("from_to"),
 
+    GT("gt"),
+
+    GTE("gte"),
+
+    LT("gt"),
+
+    LTE("gte"),
+
     EQUALS("equals"),
 
     NOT_EQUALS("not_equals");

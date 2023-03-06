@@ -3,7 +3,6 @@ package com.zyhz.simple.es.sample.service;
 import com.zyhz.simple.es.core.base.BasedQueryES;
 import com.zyhz.simple.es.core.conditions.QueryWrapper;
 import com.zyhz.simple.es.sample.entity.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -108,6 +108,7 @@ public class BasedQueryES<T> {
                 String values = (String) condition.getValue();
                 Object[] arr = Arrays.stream(values.split(",")).toArray();
                 queryBuilder.filter(QueryBuilders.termsQuery(condition.getField(), arr));
+
             }
             if (ConditionType.FROM_TO.getType().equals( condition.getConditionType().getType())){
                 Map<String, Object> rangeMap = (Map<String, Object>) condition.getValue();
@@ -115,6 +116,30 @@ public class BasedQueryES<T> {
                         rangeQuery(condition.getField())
                         .from(rangeMap.get("from"))
                         .to(rangeMap.get("to")));
+            }
+            if (ConditionType.GT.getType().equals( condition.getConditionType().getType())){
+                Object values = condition.getValue();
+                queryBuilder.filter(QueryBuilders.
+                        rangeQuery(condition.getField())
+                        .gt(values));
+            }
+            if (ConditionType.GTE.getType().equals( condition.getConditionType().getType())){
+                Object values = condition.getValue();
+                queryBuilder.filter(QueryBuilders.
+                        rangeQuery(condition.getField())
+                        .gte(values));
+            }
+            if (ConditionType.LT.getType().equals( condition.getConditionType().getType())){
+                Object values = condition.getValue();
+                queryBuilder.filter(QueryBuilders.
+                        rangeQuery(condition.getField())
+                        .lt(values));
+            }
+            if (ConditionType.LTE.getType().equals( condition.getConditionType().getType())){
+                Object values = condition.getValue();
+                queryBuilder.filter(QueryBuilders.
+                        rangeQuery(condition.getField())
+                        .lte(values));
             }
             if (ConditionType.NOT_EQUALS.getType().equals( condition.getConditionType().getType())){
                 Object values = condition.getValue();

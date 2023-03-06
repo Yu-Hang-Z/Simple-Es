@@ -12,6 +12,14 @@ public interface Func<Children> extends Serializable {
 
     Children between(boolean condition, String field, Object from, Object to);
 
+    Children gt(boolean condition, String field, Object val);
+
+    Children gte(boolean condition, String field, Object val);
+
+    Children lt(boolean condition, String field, Object val);
+
+    Children lte(boolean condition, String field, Object val);
+
 
 
     Children groupBy(boolean condition, String columns, String field);
