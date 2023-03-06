@@ -49,7 +49,8 @@ public class DataService {
                 .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
                 .groupBy(true, "state_code", "state_code")
                 .groupBy(true, "year", "year")
-                .sum(true, "co2", "co_catipa")
+                .sum(true, "co2", "co2")
+                .sum(true, "co_catipa", "co_catipa")
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.aggregationQuery(wrapper);
         return list;
