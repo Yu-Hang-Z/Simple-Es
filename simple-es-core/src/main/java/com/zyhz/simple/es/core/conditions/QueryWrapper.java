@@ -52,6 +52,15 @@ public class QueryWrapper<T> extends EsBasedQuery
     }
 
     @Override
+    public QueryWrapper notIn(boolean condition, String column, Object val) {
+        if(condition && !ObjectUtils.isEmpty(val)){
+            this.addQueryCondition(ConditionType.NOT_IN.getType(), column, val);
+        }
+        return this;
+    }
+
+
+    @Override
     public QueryWrapper between(boolean condition, String field, Object from, Object to) {
         if(condition && !ObjectUtils.isEmpty(from) && !ObjectUtils.isEmpty(to)){
             Map<String, Object> map = new HashMap<>();
@@ -102,9 +111,10 @@ public class QueryWrapper<T> extends EsBasedQuery
     }
 
     @Override
-    public QueryWrapper<T> sum(boolean condition, String columns, String field) {
+    public QueryWrapper<T> sum(boolean condition, String column, String field) {
         if (condition){
-            this.addSumFields(columns,field);
+            this.addAggregateCalculationConditions(ConditionType.SUM.getType(), column, field);
+            this.addSumFields(column,field);
         }
         return this;
     }

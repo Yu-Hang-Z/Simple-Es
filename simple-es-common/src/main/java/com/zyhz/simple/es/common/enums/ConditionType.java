@@ -15,6 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor
 @AllArgsConstructor
 public enum ConditionType {
+
+    NOT_IN("not_in"),
+
     IN("in"),
 
     FROM_TO("from_to"),
@@ -29,7 +32,12 @@ public enum ConditionType {
 
     EQUALS("equals"),
 
-    NOT_EQUALS("not_equals");
+    NOT_EQUALS("not_equals"),
+
+
+    SUM("sum");
+
+
 
     private String type;
 
