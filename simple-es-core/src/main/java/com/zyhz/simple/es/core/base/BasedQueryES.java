@@ -193,7 +193,8 @@ public class BasedQueryES<T> {
             SumAggregationBuilder sumAgg = AggregationBuilders.sum(entry.getKey()).field(entry.getValue());
 
             if (childSumAgg != null) {
-                sumAgg.subAggregation(childSumAgg);
+                // todo 该行代码导致聚合计算是流式计算，需要修改
+                //sumAgg.subAggregation(childSumAgg);
             }
             childSumAgg = sumAgg;
         }
