@@ -158,7 +158,8 @@ public class BasedQueryES<T> {
 
 
     private SearchSourceBuilder createCitySearchSourceBuilder(SearchSourceBuilder sourceBuilder, Map<String, String> pailMap, List<BasedCalculationCondition> conditions) {
-        sourceBuilder.aggregation(createTermsAggregationBuilder(pailMap, conditions));
+        TermsAggregationBuilder termsAgg = createTermsAggregationBuilder(pailMap, conditions);
+        sourceBuilder.aggregation(termsAgg);
         sourceBuilder.size(0);
         return sourceBuilder;
     }
@@ -168,13 +169,15 @@ public class BasedQueryES<T> {
      * @param pailMap 分桶顺序需要固定
      * @return
      */
-    private AggregationBuilder createTermsAggregationBuilder(Map<String, String> pailMap, List<BasedCalculationCondition> conditions) {
-        AggregationBuilder childTermAgg = newCreateSumAggregationBuilder(conditions);
+    private TermsAggregationBuilder createTermsAggregationBuilder(Map<String, String> pailMap, List<BasedCalculationCondition> calculations) {
+        TermsAggregationBuilder childTermAgg = null;
         for (int i = pailMap.size(); i > 0; i--) {
             String key = bucketPrefix + i;
             TermsAggregationBuilder termAgg = AggregationBuilders.terms(key).field(pailMap.get(key));
             if (childTermAgg != null) {
                 termAgg.subAggregation(childTermAgg);
+            } else {
+                termAgg = createValueAggregationBuilder(termAgg, calculations);
             }
             childTermAgg = termAgg.size(1000);
         }
@@ -183,42 +186,21 @@ public class BasedQueryES<T> {
 
 
     /**
-     * 动态构建分组后的求和查询条件
-     * @param sumMap
-     * @return
-     */
-    private AggregationBuilder createSumAggregationBuilder(Map<String, String> sumMap) {
-        AggregationBuilder childSumAgg = null;
-        for (Map.Entry<String, String> entry : sumMap.entrySet()) {
-            SumAggregationBuilder sumAgg = AggregationBuilders.sum(entry.getKey()).field(entry.getValue());
-
-            if (childSumAgg != null) {
-                // todo 该行代码导致聚合计算是流式计算，需要修改
-                //sumAgg.subAggregation(childSumAgg);
-            }
-            childSumAgg = sumAgg;
-        }
-        return childSumAgg;
-    }
-
-    /**
-     * 动态构建分组后的求和查询条件
+     * 动态构建分组后的桶计算查询条件
      * @param calculations
      * @return
      */
-    private AggregationBuilder newCreateSumAggregationBuilder(List<BasedCalculationCondition> calculations) {
-        AggregationBuilder childSumAgg = null;
+    private TermsAggregationBuilder createValueAggregationBuilder(TermsAggregationBuilder termsAgg, List<BasedCalculationCondition> calculations) {
         for (BasedCalculationCondition condition : calculations) {
-            AggregationBuilder sumAgg = null;
+            AggregationBuilder valueAgg = null;
             if (ConditionType.SUM.getType().equals( condition.getConditionType().getType())){
-                sumAgg = AggregationBuilders.sum(condition.getColumn()).field(condition.getField());
+                valueAgg = AggregationBuilders.sum(condition.getColumn()).field(condition.getField());
             }
-            if (childSumAgg != null) {
-                sumAgg.subAggregation(childSumAgg);
+            if (valueAgg != null) {
+                termsAgg.subAggregation(valueAgg);
             }
-            childSumAgg = sumAgg;
         }
-        return childSumAgg;
+        return termsAgg;
     }
 
 
