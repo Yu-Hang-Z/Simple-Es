@@ -4,6 +4,7 @@ package com.zyhz.simple.es.core.conditions;
 
 
 import com.zyhz.simple.es.common.enums.ConditionType;
+import com.zyhz.simple.es.common.model.BasedCalculationCondition;
 import com.zyhz.simple.es.common.model.BasedQueryCondition;
 import com.zyhz.simple.es.core.base.BasedQueryES;
 import lombok.Getter;
@@ -70,6 +71,8 @@ public class EsBasedQuery<T> {
      */
     private Map<String, String> sumFields;
 
+    private List<BasedCalculationCondition> aggregateCalculationConditions;
+
     /**
      * 必填参数，确定泛型类型
      */
@@ -96,14 +99,14 @@ public class EsBasedQuery<T> {
         this.bucketFields = bucketFields;
     }
 
-    public void addQueryCondition(String conditionType, String field, Object value){
-        if (this.basedQueryConditions == null){
-            this.basedQueryConditions = new ArrayList<>();
+    public void addAggregateCalculationConditions(String conditionType, String field, String value){
+        if (this.aggregateCalculationConditions == null){
+            this.aggregateCalculationConditions = new ArrayList<>();
         }
         if (value == null){
             return;
         }
-        this.basedQueryConditions.add(new BasedQueryCondition(ConditionType.getConditionType(conditionType),field,value));
+        this.aggregateCalculationConditions.add(new BasedCalculationCondition(ConditionType.getConditionType(conditionType),field,value));
     }
 
     public void addFetchSource(String field){
@@ -118,6 +121,16 @@ public class EsBasedQuery<T> {
             this.sumFields = new HashMap<>();
         }
         this.sumFields.put(columns, field);
+    }
+
+    public void addQueryCondition(String conditionType, String field, Object value){
+        if (this.basedQueryConditions == null){
+            this.basedQueryConditions = new ArrayList<>();
+        }
+        if (value == null){
+            return;
+        }
+        this.basedQueryConditions.add(new BasedQueryCondition(ConditionType.getConditionType(conditionType),field,value));
     }
 
     public void addAggregationMap(String columns, String field){

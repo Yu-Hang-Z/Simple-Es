@@ -4,6 +4,7 @@ package com.zyhz.simple.es.core.base;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.zyhz.simple.es.common.model.BasedCalculationCondition;
 import com.zyhz.simple.es.common.utils.ReflectUtils;
 import com.zyhz.simple.es.common.enums.ConditionType;
 import com.zyhz.simple.es.common.model.BasedQueryCondition;
@@ -62,7 +63,7 @@ public class BasedQueryES<T> {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder queryBuilder = creatQuery(request.getBasedQueryConditions());
         sourceBuilder.query(queryBuilder);
-        sourceBuilder = createCitySearchSourceBuilder(sourceBuilder, request.getBucketFields(), request.getSumFields());
+        sourceBuilder = createCitySearchSourceBuilder(sourceBuilder, request.getBucketFields(), request.getAggregateCalculationConditions());
         searchRequest.source(sourceBuilder);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         initContext(request);
@@ -104,10 +105,19 @@ public class BasedQueryES<T> {
                 Object values = condition.getValue();
                 queryBuilder.filter(QueryBuilders.termsQuery(condition.getField(), values));
             }
+            if (ConditionType.NOT_EQUALS.getType().equals( condition.getConditionType().getType())){
+                Object values = condition.getValue();
+                queryBuilder.mustNot(QueryBuilders.termsQuery(condition.getField(), values));
+            }
             if (ConditionType.IN.getType().equals( condition.getConditionType().getType())){
                 String values = (String) condition.getValue();
                 Object[] arr = Arrays.stream(values.split(",")).toArray();
                 queryBuilder.filter(QueryBuilders.termsQuery(condition.getField(), arr));
+            }
+            if (ConditionType.NOT_IN.getType().equals( condition.getConditionType().getType())){
+                String values = (String) condition.getValue();
+                Object[] arr = Arrays.stream(values.split(",")).toArray();
+                queryBuilder.mustNot(QueryBuilders.termsQuery(condition.getField(), arr));
             }
             if (ConditionType.FROM_TO.getType().equals( condition.getConditionType().getType())){
                 Map<String, Object> rangeMap = (Map<String, Object>) condition.getValue();
@@ -116,11 +126,30 @@ public class BasedQueryES<T> {
                         .from(rangeMap.get("from"))
                         .to(rangeMap.get("to")));
             }
-            if (ConditionType.NOT_EQUALS.getType().equals( condition.getConditionType().getType())){
+            if (ConditionType.GT.getType().equals( condition.getConditionType().getType())){
                 Object values = condition.getValue();
-                queryBuilder.mustNot(QueryBuilders.termsQuery(condition.getField(), values));
+                queryBuilder.filter(QueryBuilders.
+                        rangeQuery(condition.getField())
+                        .gt(values));
             }
-            
+            if (ConditionType.GTE.getType().equals( condition.getConditionType().getType())){
+                Object values = condition.getValue();
+                queryBuilder.filter(QueryBuilders.
+                        rangeQuery(condition.getField())
+                        .gte(values));
+            }
+            if (ConditionType.LT.getType().equals( condition.getConditionType().getType())){
+                Object values = condition.getValue();
+                queryBuilder.filter(QueryBuilders.
+                        rangeQuery(condition.getField())
+                        .lt(values));
+            }
+            if (ConditionType.LTE.getType().equals( condition.getConditionType().getType())){
+                Object values = condition.getValue();
+                queryBuilder.filter(QueryBuilders.
+                        rangeQuery(condition.getField())
+                        .lte(values));
+            }
         }
         return queryBuilder;
 
@@ -128,25 +157,27 @@ public class BasedQueryES<T> {
 
 
 
-    private SearchSourceBuilder createCitySearchSourceBuilder(SearchSourceBuilder sourceBuilder, Map<String, String> pailMap, Map<String, String> sumMap) {
-        sourceBuilder.aggregation(createTermsAggregationBuilder(pailMap, sumMap));
+    private SearchSourceBuilder createCitySearchSourceBuilder(SearchSourceBuilder sourceBuilder, Map<String, String> pailMap, List<BasedCalculationCondition> conditions) {
+        TermsAggregationBuilder termsAgg = createTermsAggregationBuilder(pailMap, conditions);
+        sourceBuilder.aggregation(termsAgg);
         sourceBuilder.size(0);
         return sourceBuilder;
     }
 
     /**
      * 动态分桶查询构建
-     *
      * @param pailMap 分桶顺序需要固定
      * @return
      */
-    private AggregationBuilder createTermsAggregationBuilder(Map<String, String> pailMap, Map<String, String> sumMap) {
-        AggregationBuilder childTermAgg = createSumAggregationBuilder(sumMap);
+    private TermsAggregationBuilder createTermsAggregationBuilder(Map<String, String> pailMap, List<BasedCalculationCondition> calculations) {
+        TermsAggregationBuilder childTermAgg = null;
         for (int i = pailMap.size(); i > 0; i--) {
             String key = bucketPrefix + i;
             TermsAggregationBuilder termAgg = AggregationBuilders.terms(key).field(pailMap.get(key));
             if (childTermAgg != null) {
                 termAgg.subAggregation(childTermAgg);
+            } else {
+                termAgg = createValueAggregationBuilder(termAgg, calculations);
             }
             childTermAgg = termAgg.size(1000);
         }
@@ -155,22 +186,23 @@ public class BasedQueryES<T> {
 
 
     /**
-     * 动态构建分组后的求和查询条件
-     *
-     * @param sumMap
+     * 动态构建分组后的桶计算查询条件
+     * @param calculations
      * @return
      */
-    private AggregationBuilder createSumAggregationBuilder(Map<String, String> sumMap) {
-        AggregationBuilder childSumAgg = null;
-        for (Map.Entry<String, String> entry : sumMap.entrySet()) {
-            SumAggregationBuilder sumAgg = AggregationBuilders.sum(entry.getKey()).field(entry.getValue());
-            if (childSumAgg != null) {
-                sumAgg.subAggregation(childSumAgg);
+    private TermsAggregationBuilder createValueAggregationBuilder(TermsAggregationBuilder termsAgg, List<BasedCalculationCondition> calculations) {
+        for (BasedCalculationCondition condition : calculations) {
+            AggregationBuilder valueAgg = null;
+            if (ConditionType.SUM.getType().equals( condition.getConditionType().getType())){
+                valueAgg = AggregationBuilders.sum(condition.getColumn()).field(condition.getField());
             }
-            childSumAgg = sumAgg;
+            if (valueAgg != null) {
+                termsAgg.subAggregation(valueAgg);
+            }
         }
-        return childSumAgg;
+        return termsAgg;
     }
+
 
     private List<T> getSC(SearchResponse sr) {
         List<T> list = new ArrayList<T>();
@@ -239,7 +271,6 @@ public class BasedQueryES<T> {
             basedQueryContext.put("inventoryInfo", inventoryInfo);
             List<T> analysisLevel3List = analysisLevelBuckets(childAgg, recursionNumber + 1);
             analysisLevelList.addAll(analysisLevel3List);
-
         }
         return analysisLevelList;
     }

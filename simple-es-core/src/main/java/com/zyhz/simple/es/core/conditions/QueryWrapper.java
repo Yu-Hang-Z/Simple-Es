@@ -52,12 +52,52 @@ public class QueryWrapper<T> extends EsBasedQuery
     }
 
     @Override
+    public QueryWrapper notIn(boolean condition, String column, Object val) {
+        if(condition && !ObjectUtils.isEmpty(val)){
+            this.addQueryCondition(ConditionType.NOT_IN.getType(), column, val);
+        }
+        return this;
+    }
+
+
+    @Override
     public QueryWrapper between(boolean condition, String field, Object from, Object to) {
         if(condition && !ObjectUtils.isEmpty(from) && !ObjectUtils.isEmpty(to)){
             Map<String, Object> map = new HashMap<>();
             map.put("from", from);
             map.put("to", to);
             this.addQueryCondition(ConditionType.FROM_TO.getType(), field, map);
+        }
+        return this;
+    }
+    @Override
+    public QueryWrapper<T> gt(boolean condition, String column, Object field) {
+        if (condition){
+            this.addQueryCondition(ConditionType.GT.getType(), column, field);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryWrapper<T> gte(boolean condition, String column, Object field) {
+        if (condition){
+            this.addQueryCondition(ConditionType.GTE.getType(), column, field);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryWrapper<T> lt(boolean condition, String column, Object field) {
+        if (condition){
+            this.addQueryCondition(ConditionType.LT.getType(), column, field);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryWrapper<T> lte(boolean condition, String column, Object field) {
+        if (condition){
+            this.addQueryCondition(ConditionType.LTE.getType(), column, field);
         }
         return this;
     }
@@ -71,9 +111,10 @@ public class QueryWrapper<T> extends EsBasedQuery
     }
 
     @Override
-    public QueryWrapper<T> sum(boolean condition, String columns, String field) {
+    public QueryWrapper<T> sum(boolean condition, String column, String field) {
         if (condition){
-            this.addSumFields(columns,field);
+            this.addAggregateCalculationConditions(ConditionType.SUM.getType(), column, field);
+            this.addSumFields(column,field);
         }
         return this;
     }

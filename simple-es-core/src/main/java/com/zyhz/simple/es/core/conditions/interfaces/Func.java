@@ -10,7 +10,17 @@ public interface Func<Children> extends Serializable {
 
     Children in(boolean condition, String column, Object val);
 
+    Children notIn(boolean condition, String column, Object val);
+
     Children between(boolean condition, String field, Object from, Object to);
+
+    Children gt(boolean condition, String field, Object val);
+
+    Children gte(boolean condition, String field, Object val);
+
+    Children lt(boolean condition, String field, Object val);
+
+    Children lte(boolean condition, String field, Object val);
 
 
 
