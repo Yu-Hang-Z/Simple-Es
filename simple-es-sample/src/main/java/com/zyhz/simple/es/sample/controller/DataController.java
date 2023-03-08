@@ -58,4 +58,15 @@ public class DataController {
         }
         return list;
     }
+
+    @RequestMapping("getList4")
+    public List<Data> getList4() {
+        List<Data> list = new ArrayList<Data>();
+        try {
+            list = dataService.getData4();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
 }
