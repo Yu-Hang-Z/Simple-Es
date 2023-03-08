@@ -19,5 +19,4 @@ public class Data implements Serializable {
     private Integer year;
 
     private BigDecimal co2_catipa;
-
 }
