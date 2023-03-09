@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public interface Func<Children> extends Serializable {
 
-    Children not(boolean condition, String columns, Object field);
+    Children ne(boolean condition, String columns, Object field);
 
-    Children equals(boolean condition, String columns, Object field);
+    Children eq(boolean condition, String columns, Object field);
 
     Children in(boolean condition, String column, Object val);
 
@@ -16,11 +16,11 @@ public interface Func<Children> extends Serializable {
 
     Children gt(boolean condition, String field, Object val);
 
-    Children gte(boolean condition, String field, Object val);
+    Children ge(boolean condition, String field, Object val);
 
     Children lt(boolean condition, String field, Object val);
 
-    Children lte(boolean condition, String field, Object val);
+    Children le(boolean condition, String field, Object val);
 
 
 

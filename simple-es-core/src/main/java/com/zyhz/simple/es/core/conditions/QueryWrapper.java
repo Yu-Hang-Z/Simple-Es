@@ -28,7 +28,7 @@ public class QueryWrapper<T> extends EsBasedQuery
     }
 
     @Override
-    public QueryWrapper<T> not(boolean condition, String column, Object field) {
+    public QueryWrapper<T> ne(boolean condition, String column, Object field) {
         if (condition){
             this.addQueryCondition(ConditionType.NOT_EQUALS.getType(), column, field);
         }
@@ -36,7 +36,7 @@ public class QueryWrapper<T> extends EsBasedQuery
     }
 
     @Override
-    public QueryWrapper<T> equals(boolean condition, String column, Object field) {
+    public QueryWrapper<T> eq(boolean condition, String column, Object field) {
         if (condition){
             this.addQueryCondition(ConditionType.EQUALS.getType(), column, field);
         }
@@ -79,7 +79,7 @@ public class QueryWrapper<T> extends EsBasedQuery
     }
 
     @Override
-    public QueryWrapper<T> gte(boolean condition, String column, Object field) {
+    public QueryWrapper<T> ge(boolean condition, String column, Object field) {
         if (condition){
             this.addQueryCondition(ConditionType.GTE.getType(), column, field);
         }
@@ -95,7 +95,7 @@ public class QueryWrapper<T> extends EsBasedQuery
     }
 
     @Override
-    public QueryWrapper<T> lte(boolean condition, String column, Object field) {
+    public QueryWrapper<T> le(boolean condition, String column, Object field) {
         if (condition){
             this.addQueryCondition(ConditionType.LTE.getType(), column, field);
         }
