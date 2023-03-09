@@ -196,6 +196,21 @@ public class BasedQueryES<T> {
             if (ConditionType.SUM.getType().equals( condition.getConditionType().getType())){
                 valueAgg = AggregationBuilders.sum(condition.getColumn()).field(condition.getField());
             }
+            if (ConditionType.AVG.getType().equals(condition.getConditionType().getType())){
+                valueAgg = AggregationBuilders.avg(condition.getColumn()).field(condition.getField());
+            }
+            if (ConditionType.MAX.getType().equals(condition.getConditionType().getType())){
+                valueAgg = AggregationBuilders.max(condition.getColumn()).field(condition.getField());
+            }
+            if (ConditionType.MIN.getType().equals(condition.getConditionType().getType())){
+                valueAgg = AggregationBuilders.min(condition.getColumn()).field(condition.getField());
+            }
+            if (ConditionType.COUNT.getType().equals(condition.getConditionType().getType())){
+                valueAgg = AggregationBuilders.count(condition.getColumn()).field(condition.getField());
+            }
+            if (ConditionType.CARDINALITY.getType().equals(condition.getConditionType().getType())){
+                valueAgg = AggregationBuilders.cardinality(condition.getColumn()).field(condition.getField());
+            }
             if (valueAgg != null) {
                 termsAgg.subAggregation(valueAgg);
             }

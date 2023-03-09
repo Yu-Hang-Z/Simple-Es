@@ -35,7 +35,19 @@ public enum ConditionType {
     NOT_EQUALS("not_equals"),
 
 
-    SUM("sum");
+    SUM("sum"),
+
+    MAX("max"),
+
+    MIN("min"),
+
+    COUNT("count"),
+
+    CARDINALITY("cardinality"),
+
+    AVG("avg");
+
+
 
 
 

@@ -119,6 +119,42 @@ public class QueryWrapper<T> extends EsBasedQuery
         return this;
     }
 
+    @Override
+    public QueryWrapper<T> min(boolean condition, String column, String field) {
+        if (condition){
+            this.addAggregateCalculationConditions(ConditionType.MIN.getType(), column, field);
+            this.addSumFields(column,field);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryWrapper<T> max(boolean condition, String column, String field) {
+        if (condition){
+            this.addAggregateCalculationConditions(ConditionType.MAX.getType(), column, field);
+            this.addSumFields(column,field);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryWrapper<T> count(boolean condition, String column, String field) {
+        if (condition){
+            this.addAggregateCalculationConditions(ConditionType.COUNT.getType(), column, field);
+            this.addSumFields(column,field);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryWrapper<T> avg(boolean condition, String column, String field) {
+        if (condition){
+            this.addAggregateCalculationConditions(ConditionType.AVG.getType(), column, field);
+            this.addSumFields(column,field);
+        }
+        return this;
+    }
+
     public QueryWrapper from_to(boolean condition, Integer page, Integer size){
         if (condition){
             this.setFrom(page);

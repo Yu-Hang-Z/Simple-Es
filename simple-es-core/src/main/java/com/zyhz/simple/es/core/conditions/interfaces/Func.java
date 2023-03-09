@@ -28,5 +28,13 @@ public interface Func<Children> extends Serializable {
 
     Children sum(boolean condition, String columns, String field);
 
+    Children min(boolean condition, String columns, String field);
+
+    Children max(boolean condition, String columns, String field);
+
+    Children count(boolean condition, String columns, String field);
+
+    Children avg(boolean condition, String columns, String field);
+
 
 }
