@@ -19,9 +19,93 @@ simple-Es -- 父工程
 
 ## 技术选型
 
-| 技术                  | 说明 |
-|---------------------| ---------------------------|
-| Spring Boot         | Spring 应用快速开发脚手架 |
+|        技术        |         说明         |
+|:----------------:|:------------------:|
+| Spring Framework |    Spring 核心框架     |
+|  Elasticsearch   | Elasticsearch 搜索引擎 |
+|      Lombok      |  Lombok 简化对象封装工具   |
+|      Hutool      |     Hutool 工具类     |
+|     Swagger      |    Swagger 接口文档    |
+
+
+
+
+## 入门案例
+
+
+### 1.引入依赖
+
+```xml 
+<dependency>
+    <groupId>com.github.simple</groupId>
+    <artifactId>simple-es-boot-starter</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+### 2.配置文件
+
+```yaml
+spring:
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
+```
+### 3.编写实体类
+
+```java
+@Data
+@Document(indexName = "test", type = "test")
+public class TestEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    private String id;
+
+    private String name;
+
+    private Integer age;
+
+    private String address;
+
+    private String phone;
+
+    private String email;
+
+    private String remark;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+}
+```
+## MySQL Simple-Es and Es syntax comparison table
+|    MySQL    | 	Simple-Es |    Es-DSL/Es java api     |
+|:-----------:|:----------:|:-------------------------:|
+|      =      |     eq     |         termQuery         |
+|     !=      |     ne     |    mustNot(termQuery)     |
+|      >      |     gt     |        rangeQuery         |
+|     >=      |     ge     |        rangeQuery         |
+|      <      |     lt     |        rangeQuery         |
+|     <=      |     le     |        rangeQuery         |
+|     in      |     in     |        termsQuery         |
+|   not in    |   notIn    |    mustNot(termsQuery)    |
+|    like     |    like    |       wildcardQuery       |
+|  not like   |  notLike   |  mustNot(wildcardQuery)   |
+|   is null   |   isNull   |   mustNot(existsQuery)    |
+| is not null | isNotNull  |        existsQuery        |
+|   between   |  between   |        rangeQuery         |
+| not between | notBetween |    mustNot(rangeQuery)    |
+|  group by   |  groupBy   | AggregationBuilders.terms |
+|  order by   |  orderBy   |  SortBuilders.fieldSort   |
+|    count    |   count    | AggregationBuilders.count |
+|     sum     |    sum     |  AggregationBuilders.sum  |
+|     avg     |    avg     |  AggregationBuilders.avg  |
+|     max     |    max     |  AggregationBuilders.max  |
+|     min     |    min     |  AggregationBuilders.min  |
+
 
 
 
