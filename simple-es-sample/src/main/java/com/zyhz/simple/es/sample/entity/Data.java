@@ -18,5 +18,13 @@ public class Data implements Serializable {
 
     private Integer year;
 
-    private BigDecimal co2_catipa;
+    private BigDecimal sum_co2;
+
+    private BigDecimal max_co2;
+
+    private BigDecimal min_co2;
+
+    private BigDecimal count_co2;
+
+    private BigDecimal avg_co2;
 }

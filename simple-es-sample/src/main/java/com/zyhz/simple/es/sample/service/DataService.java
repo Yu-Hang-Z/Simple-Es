@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,5 +67,21 @@ public class DataService {
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.aggregationQuery(wrapper);
         return list;
+    }
+
+    public List<Data> getData5() throws IOException {
+        QueryWrapper wrapper = QueryWrapper.create()
+                .setQueryIndex(true, "alias_emis_server_aggregation_pop_year")
+                .groupBy(true, "year", "year")
+                .groupBy(true, "state_code", "state_code")
+                .sum(true, "sum_co2", "co2")
+                .max(true, "max_co2", "co2")
+                .min(true, "min_co2", "co2")
+                .count(true, "count_co2", "co2")
+                .avg(true, "avg_co2", "co2")
+                .addGeneric(Data.class);
+        List<Data> list =  basedQueryES.aggregationQuery(wrapper);
+        return list;
+
     }
 }
