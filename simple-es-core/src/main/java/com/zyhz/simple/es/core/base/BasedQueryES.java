@@ -167,6 +167,16 @@ public class BasedQueryES<T> {
                 queryBuilder.mustNot(QueryBuilders.
                         wildcardQuery(condition.getField(), values));
             }
+            if (ConditionType.IS_NULL.getType().equals( condition.getConditionType().getType())){
+                queryBuilder.filter(QueryBuilders.
+                        boolQuery()
+                        .mustNot(QueryBuilders.existsQuery(condition.getField())));
+            }
+            if (ConditionType.IS_NOT_NULL.getType().equals( condition.getConditionType().getType())){
+                queryBuilder.filter(QueryBuilders.
+                        boolQuery()
+                        .must(QueryBuilders.existsQuery(condition.getField())));
+            }
         }
         return queryBuilder;
 

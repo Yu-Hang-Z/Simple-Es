@@ -73,6 +73,22 @@ public class QueryWrapper<T> extends EsBasedQuery
         return this;
     }
 
+    @Override
+    public QueryWrapper<T> isNull(boolean condition, String column, Object val) {
+        if (condition && !ObjectUtils.isEmpty(val)){
+            this.addQueryCondition(ConditionType.IS_NULL.getType(), column, val);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryWrapper<T> isNotNull(boolean condition, String column, Object val) {
+        if (condition && !ObjectUtils.isEmpty(val)){
+            this.addQueryCondition(ConditionType.IS_NOT_NULL.getType(), column, val);
+        }
+        return this;
+    }
+
 
     @Override
     public QueryWrapper between(boolean condition, String field, Object from, Object to) {
