@@ -157,6 +157,16 @@ public class BasedQueryES<T> {
                         rangeQuery(condition.getField())
                         .lte(values));
             }
+            if (ConditionType.LIKE.getType().equals( condition.getConditionType().getType())){
+                String values = (String) condition.getValue();
+                queryBuilder.filter(QueryBuilders.
+                        wildcardQuery(condition.getField(), values));
+            }
+            if (ConditionType.NOT_LIKE.getType().equals( condition.getConditionType().getType())){
+                String values = (String) condition.getValue();
+                queryBuilder.mustNot(QueryBuilders.
+                        wildcardQuery(condition.getField(), values));
+            }
         }
         return queryBuilder;
 

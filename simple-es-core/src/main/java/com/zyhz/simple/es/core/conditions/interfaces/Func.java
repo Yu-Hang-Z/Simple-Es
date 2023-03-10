@@ -12,6 +12,10 @@ public interface Func<Children> extends Serializable {
 
     Children notIn(boolean condition, String column, Object val);
 
+    Children like(boolean condition, String column, String val);
+
+    Children notLike(boolean condition, String column, String val);
+
     Children between(boolean condition, String field, Object from, Object to);
 
     Children notBetween(boolean condition, String field, Object from, Object to);
