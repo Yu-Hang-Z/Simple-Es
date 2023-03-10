@@ -126,6 +126,13 @@ public class BasedQueryES<T> {
                         .from(rangeMap.get("from"))
                         .to(rangeMap.get("to")));
             }
+            if (ConditionType.NOT_BETWEEN.getType().equals( condition.getConditionType().getType())){
+                Map<String, Object> rangeMap = (Map<String, Object>) condition.getValue();
+                queryBuilder.mustNot(QueryBuilders.
+                        rangeQuery(condition.getField())
+                        .from(rangeMap.get("from"))
+                        .to(rangeMap.get("to")));
+            }
             if (ConditionType.GT.getType().equals( condition.getConditionType().getType())){
                 Object values = condition.getValue();
                 queryBuilder.filter(QueryBuilders.

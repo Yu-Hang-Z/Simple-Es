@@ -14,6 +14,8 @@ public interface Func<Children> extends Serializable {
 
     Children between(boolean condition, String field, Object from, Object to);
 
+    Children notBetween(boolean condition, String field, Object from, Object to);
+
     Children gt(boolean condition, String field, Object val);
 
     Children ge(boolean condition, String field, Object val);

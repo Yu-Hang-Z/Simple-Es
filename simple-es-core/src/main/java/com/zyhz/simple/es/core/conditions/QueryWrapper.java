@@ -14,9 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author by zhangyuhang
- * @Classname QueryWrapper
- * @Description TODO
- * @Date 2023/2/3 10:47
+
  */
 public class QueryWrapper<T> extends EsBasedQuery
         implements Func<QueryWrapper<T>> {
@@ -70,6 +68,18 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+
+    @Override
+    public QueryWrapper<T> notBetween(boolean condition, String field, Object from, Object to) {
+        if (condition && !ObjectUtils.isEmpty(from) && !ObjectUtils.isEmpty(to)){
+            Map<String, Object> map = new HashMap<>();
+            map.put("from", from);
+            map.put("to", to);
+            this.addQueryCondition(ConditionType.NOT_BETWEEN.getType(), field, map);
+        }
+        return this;
+    }
+
     @Override
     public QueryWrapper<T> gt(boolean condition, String column, Object field) {
         if (condition){
