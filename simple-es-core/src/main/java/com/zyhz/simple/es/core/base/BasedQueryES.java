@@ -55,9 +55,17 @@ public class BasedQueryES<T> {
         basedQueryContext.put("clz", request.getClz());
     }
 
+    public List<T> query(EsBasedQuery query) throws IOException {
 
-    public List<T> aggregationQuery(EsBasedQuery request) throws IOException {
-        // todo 通过参数控制年月索引
+        if (query.getLevel3Polymerization() != null && !query.getLevel3Polymerization().isEmpty()) {
+            return aggregationQuery(query);
+        } else {
+            return baseQuery(query);
+        }
+    }
+
+
+    private List<T> aggregationQuery(EsBasedQuery request) throws IOException {
         SearchRequest searchRequest = new SearchRequest(request.getIndex());
         //构建查询
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -73,7 +81,7 @@ public class BasedQueryES<T> {
 
 
 
-    public List baseQuery(EsBasedQuery request) throws IOException {
+    private List baseQuery(EsBasedQuery request) throws IOException {
         // 设置索引
         SearchRequest searchRequest = new SearchRequest(request.getIndex());
         // 构建查询

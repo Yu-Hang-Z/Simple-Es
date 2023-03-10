@@ -30,7 +30,7 @@ public class DataService {
                 .setQuerySize(true, 5)
                 .setQueryFrom(true, 0)
                 .addGeneric(Data.class);
-        List<Data> list =  basedQueryES.baseQuery(warper);
+        List<Data> list =  basedQueryES.query(warper);
         return list;
 
     }
@@ -41,7 +41,7 @@ public class DataService {
                 .groupBy(true, "state_code", "state_code")
                 .sum(true, "co2", "co_catipa")
                 .addGeneric(Data.class);
-        List<Data> list =  basedQueryES.aggregationQuery(wrapper);
+        List<Data> list =  basedQueryES.query(wrapper);
         return list;
     }
 
@@ -53,7 +53,7 @@ public class DataService {
                 .notIn(true, "year", "1998")
                 .sum(true, "co2", "co_catipa")
                 .addGeneric(Data.class);
-        List<Data> list =  basedQueryES.aggregationQuery(wrapper);
+        List<Data> list =  basedQueryES.query(wrapper);
         return list;
     }
 
@@ -65,7 +65,7 @@ public class DataService {
                 .sum(true, "co2", "co2")
                 .sum(true, "co2_catipa", "co2_catipa")
                 .addGeneric(Data.class);
-        List<Data> list =  basedQueryES.aggregationQuery(wrapper);
+        List<Data> list =  basedQueryES.query(wrapper);
         return list;
     }
 
@@ -80,7 +80,22 @@ public class DataService {
                 .count(true, "count_co2", "co2")
                 .avg(true, "avg_co2", "co2")
                 .addGeneric(Data.class);
-        List<Data> list =  basedQueryES.aggregationQuery(wrapper);
+        List<Data> list =  basedQueryES.query(wrapper);
+        return list;
+
+    }
+
+    public List<Data> getData6() throws IOException {
+        List<Data> list =  basedQueryES.query(QueryWrapper.create()
+                .setQueryIndex(true, "alias_emis_server_aggregation_pop_year")
+                .groupBy(true, "year", "year")
+                .groupBy(true, "state_code", "state_code")
+                .sum(true, "sum_co2", "co2")
+                .max(true, "max_co2", "co2")
+                .min(true, "min_co2", "co2")
+                .count(true, "count_co2", "co2")
+                .avg(true, "avg_co2", "co2")
+                .addGeneric(Data.class));
         return list;
 
     }
