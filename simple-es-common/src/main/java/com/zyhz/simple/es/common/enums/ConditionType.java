@@ -16,11 +16,9 @@ import org.apache.commons.lang3.StringUtils;
 @AllArgsConstructor
 public enum ConditionType {
 
-    NOT_IN("not_in"),
+    EQUALS("equals"),
 
-    IN("in"),
-
-    FROM_TO("from_to"),
+    NOT_EQUALS("not_equals"),
 
     GT("gt"),
 
@@ -30,10 +28,21 @@ public enum ConditionType {
 
     LTE("gte"),
 
-    EQUALS("equals"),
+    IN("in"),
 
-    NOT_EQUALS("not_equals"),
+    NOT_IN("not_in"),
 
+    LIKE("like"),
+
+    NOT_LIKE("not_like"),
+
+    IS_NULL("is_null"),
+
+    IS_NOT_NULL("is_not_null"),
+
+    BETWEEN("between"),
+
+    NOT_BETWEEN("not_between"),
 
     SUM("sum"),
 
@@ -46,9 +55,6 @@ public enum ConditionType {
     CARDINALITY("cardinality"),
 
     AVG("avg");
-
-
-
 
 
     private String type;

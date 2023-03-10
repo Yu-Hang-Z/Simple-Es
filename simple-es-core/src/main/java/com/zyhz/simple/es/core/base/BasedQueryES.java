@@ -119,7 +119,7 @@ public class BasedQueryES<T> {
                 Object[] arr = Arrays.stream(values.split(",")).toArray();
                 queryBuilder.mustNot(QueryBuilders.termsQuery(condition.getField(), arr));
             }
-            if (ConditionType.FROM_TO.getType().equals( condition.getConditionType().getType())){
+            if (ConditionType.BETWEEN.getType().equals( condition.getConditionType().getType())){
                 Map<String, Object> rangeMap = (Map<String, Object>) condition.getValue();
                 queryBuilder.filter(QueryBuilders.
                         rangeQuery(condition.getField())

@@ -66,7 +66,7 @@ public class QueryWrapper<T> extends EsBasedQuery
             Map<String, Object> map = new HashMap<>();
             map.put("from", from);
             map.put("to", to);
-            this.addQueryCondition(ConditionType.FROM_TO.getType(), field, map);
+            this.addQueryCondition(ConditionType.BETWEEN.getType(), field, map);
         }
         return this;
     }
