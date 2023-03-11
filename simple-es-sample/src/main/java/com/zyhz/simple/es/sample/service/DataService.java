@@ -99,4 +99,16 @@ public class DataService {
         return list;
 
     }
+
+    public List<Data> getData7() throws IOException {
+        QueryWrapper wrapper = QueryWrapper.create()
+                .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
+                .groupBy(true, "year", "year")
+                .groupBy(true, "state_code", "state_code")
+                .sum(true, "co2", "co2")
+                .sum(true, "co2_catipa", "co2_catipa")
+                .addGeneric(Data.class);
+        List<Data> list =  basedQueryES.query(wrapper);
+        return list;
+    }
 }
