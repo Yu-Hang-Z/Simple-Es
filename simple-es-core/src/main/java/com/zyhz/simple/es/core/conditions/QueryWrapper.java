@@ -32,6 +32,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper<T> ne(String column, Object field) {
+        return ne(true, column, field);
+    }
 
     @Override
     public QueryWrapper<T> eq(boolean condition, String column, Object field) {
@@ -39,6 +42,9 @@ public class QueryWrapper<T> extends EsBasedQuery
             this.addQueryCondition(ConditionType.EQUALS.getType(), column, field);
         }
         return this;
+    }
+    public QueryWrapper<T> eq(String column, Object field) {
+        return eq(true, column, field);
     }
 
     @Override
@@ -48,6 +54,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper in(String column, Object val) {
+        return in(true, column, val);
+    }
 
     @Override
     public QueryWrapper notIn(boolean condition, String column, Object val) {
@@ -55,6 +64,9 @@ public class QueryWrapper<T> extends EsBasedQuery
             this.addQueryCondition(ConditionType.NOT_IN.getType(), column, val);
         }
         return this;
+    }
+    public QueryWrapper notIn(String column, Object val) {
+        return notIn(true, column, val);
     }
 
     @Override
@@ -64,6 +76,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper<T> like(String column, String val) {
+        return like(true, column, val);
+    }
 
     @Override
     public QueryWrapper<T> notLike(boolean condition, String column, String val) {
@@ -71,6 +86,9 @@ public class QueryWrapper<T> extends EsBasedQuery
             this.addQueryCondition(ConditionType.NOT_LIKE.getType(), column, val);
         }
         return this;
+    }
+    public QueryWrapper<T> notLike(String column, String val) {
+        return notLike(true, column, val);
     }
 
     @Override
@@ -80,6 +98,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper<T> isNull(String column, Object val) {
+        return isNull(true, column, val);
+    }
 
     @Override
     public QueryWrapper<T> isNotNull(boolean condition, String column, Object val) {
@@ -87,6 +108,9 @@ public class QueryWrapper<T> extends EsBasedQuery
             this.addQueryCondition(ConditionType.IS_NOT_NULL.getType(), column, val);
         }
         return this;
+    }
+    public QueryWrapper<T> isNotNull(String column, Object val) {
+        return isNotNull(true, column, val);
     }
 
 
@@ -100,6 +124,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper between(String field, Object from, Object to) {
+        return between(true, field, from, to);
+    }
 
     @Override
     public QueryWrapper<T> notBetween(boolean condition, String field, Object from, Object to) {
@@ -111,6 +138,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper<T> notBetween(String field, Object from, Object to) {
+        return notBetween(true, field, from, to);
+    }
 
     @Override
     public QueryWrapper<T> gt(boolean condition, String column, Object field) {
@@ -118,6 +148,9 @@ public class QueryWrapper<T> extends EsBasedQuery
             this.addQueryCondition(ConditionType.GT.getType(), column, field);
         }
         return this;
+    }
+    public QueryWrapper<T> gt(String column, Object field) {
+        return gt(true, column, field);
     }
 
     @Override
@@ -127,6 +160,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper<T> ge(String column, Object field) {
+        return ge(true, column, field);
+    }
 
     @Override
     public QueryWrapper<T> lt(boolean condition, String column, Object field) {
@@ -134,6 +170,9 @@ public class QueryWrapper<T> extends EsBasedQuery
             this.addQueryCondition(ConditionType.LT.getType(), column, field);
         }
         return this;
+    }
+    public QueryWrapper<T> lt(String column, Object field) {
+        return lt(true, column, field);
     }
 
     @Override
@@ -143,6 +182,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper<T> le(String column, Object field) {
+        return le(true, column, field);
+    }
 
     public QueryWrapper groupBy(boolean condition, String columns, String field){
         if (condition && columns != null && field != null){
@@ -150,6 +192,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         this.buildPolymerizationConditions(this.aggregationMap);
         return this;
+    }
+    public QueryWrapper groupBy(String columns, String field){
+        return groupBy(true, columns, field);
     }
 
     @Override
@@ -160,6 +205,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper<T> sum(String column, String field) {
+        return sum(true, column, field);
+    }
 
     @Override
     public QueryWrapper<T> min(boolean condition, String column, String field) {
@@ -168,6 +216,9 @@ public class QueryWrapper<T> extends EsBasedQuery
             this.addSumFields(column,field);
         }
         return this;
+    }
+    public QueryWrapper<T> min(String column, String field) {
+        return min(true, column, field);
     }
 
     @Override
@@ -178,6 +229,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper<T> max(String column, String field) {
+        return max(true, column, field);
+    }
 
     @Override
     public QueryWrapper<T> count(boolean condition, String column, String field) {
@@ -186,6 +240,9 @@ public class QueryWrapper<T> extends EsBasedQuery
             this.addSumFields(column,field);
         }
         return this;
+    }
+    public QueryWrapper<T> count(String column, String field) {
+        return count(true, column, field);
     }
 
     @Override
@@ -197,12 +254,19 @@ public class QueryWrapper<T> extends EsBasedQuery
         return this;
     }
 
+    public QueryWrapper<T> avg(String column, String field) {
+        return avg(true, column, field);
+    }
+
     public QueryWrapper from_to(boolean condition, Integer page, Integer size){
         if (condition){
             this.setFrom(page);
             this.setSize(size);
         }
         return this;
+    }
+    public QueryWrapper from_to(Integer page, Integer size){
+        return from_to(true, page, size);
     }
 
     public QueryWrapper sort(boolean condition, String field, String type){
@@ -237,6 +301,9 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper setQueryIndex(String type){
+        return setQueryIndex(true,type);
+    }
 
     public QueryWrapper setQuerySize(boolean condition,Integer size){
         if (condition && size != null){
@@ -244,12 +311,18 @@ public class QueryWrapper<T> extends EsBasedQuery
         }
         return this;
     }
+    public QueryWrapper setQuerySize(Integer size){
+        return setQuerySize(true,size);
+    }
 
     public QueryWrapper setQueryFrom(boolean condition,Integer from){
         if (condition && from != null){
             this.setFrom(from);
         }
         return this;
+    }
+    public QueryWrapper setQueryFrom(Integer from){
+        return setQueryFrom(true,from);
     }
 
 
