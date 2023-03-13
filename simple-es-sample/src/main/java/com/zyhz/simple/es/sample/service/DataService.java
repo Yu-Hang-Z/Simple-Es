@@ -25,10 +25,10 @@ public class DataService {
 
     public List<Data> getData1() throws IOException {
         QueryWrapper warper = QueryWrapper.create()
-                .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
+                .setQueryIndex("idx_emis_server_aggregation_pop_year_7754_v1")
                 .addAllSource("state_code,co2")
-                .setQuerySize(true, 5)
-                .setQueryFrom(true, 0)
+                .setQuerySize(5)
+                .setQueryFrom(0)
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.query(warper);
         return list;
@@ -37,9 +37,9 @@ public class DataService {
 
     public List<Data> getData2() throws IOException {
         QueryWrapper wrapper = QueryWrapper.create()
-                .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
-                .groupBy(true, "state_code", "state_code")
-                .sum(true, "co2", "co_catipa")
+                .setQueryIndex("idx_emis_server_aggregation_pop_year_7754_v1")
+                .groupBy("state_code", "state_code")
+                .sum("co2", "co_catipa")
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.query(wrapper);
         return list;
@@ -47,11 +47,11 @@ public class DataService {
 
     public List<Data> getData3() throws IOException {
         QueryWrapper wrapper = QueryWrapper.create()
-                .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
-                .groupBy(true, "state_code", "state_code")
-                .groupBy(true, "year", "year")
-                .notIn(true, "year", "1998")
-                .sum(true, "co2", "co_catipa")
+                .setQueryIndex("idx_emis_server_aggregation_pop_year_7754_v1")
+                .groupBy("state_code", "state_code")
+                .groupBy( "year", "year")
+                .notIn( "year", "1998")
+                .sum("co2", "co_catipa")
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.query(wrapper);
         return list;
@@ -59,11 +59,11 @@ public class DataService {
 
     public List<Data> getData4() throws IOException {
         QueryWrapper wrapper = QueryWrapper.create()
-                .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
-                .groupBy(true, "year", "year")
-                .groupBy(true, "state_code", "state_code")
-                .sum(true, "co2", "co2")
-                .sum(true, "co2_catipa", "co2_catipa")
+                .setQueryIndex("idx_emis_server_aggregation_pop_year_7754_v1")
+                .groupBy( "year", "year")
+                .groupBy( "state_code", "state_code")
+                .sum( "co2", "co2")
+                .sum( "co2_catipa", "co2_catipa")
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.query(wrapper);
         return list;
@@ -71,13 +71,13 @@ public class DataService {
 
     public List<Data> getData5() throws IOException {
         QueryWrapper wrapper = QueryWrapper.create()
-                .setQueryIndex(true, "alias_emis_server_aggregation_pop_year")
-                .groupBy(true, "year", "year")
-                .groupBy(true, "state_code", "state_code")
-                .sum(true, "sum_co2", "co2")
-                .max(true, "max_co2", "co2")
-                .min(true, "min_co2", "co2")
-                .count(true, "count_co2", "co2")
+                .setQueryIndex( "alias_emis_server_aggregation_pop_year")
+                .groupBy("year", "year")
+                .groupBy( "state_code", "state_code")
+                .sum( "sum_co2", "co2")
+                .max("max_co2", "co2")
+                .min( "min_co2", "co2")
+                .count( "count_co2", "co2")
                 .avg("avg_co2", "co2")
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.query(wrapper);
@@ -102,11 +102,11 @@ public class DataService {
 
     public List<Data> getData7() throws IOException {
         QueryWrapper wrapper = QueryWrapper.create()
-                .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
-                .groupBy(true, "year", "year")
-                .groupBy(true, "state_code", "state_code")
-                .sum(true, "co2", "co2")
-                .sum(true, "co2_catipa", "co2_catipa")
+                .setQueryIndex( "idx_emis_server_aggregation_pop_year_7754_v1")
+                .groupBy( "year", "year")
+                .groupBy( "state_code", "state_code")
+                .sum( "co2", "co2")
+                .sum( "co2_catipa", "co2_catipa")
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.query(wrapper);
         return list;
@@ -114,11 +114,11 @@ public class DataService {
 
     public List<Data> getData8() throws IOException {
         QueryWrapper wrapper = QueryWrapper.create()
-                .setQueryIndex(true, "idx_emis_server_aggregation_pop_year_7754_v1")
-                .groupBy(true, "year", "year")
-                .groupBy(true, "state_code", "state_code")
-                .sum(true, "co2", "co2")
-                .sum(true, "co2_catipa", "co2_catipa")
+                .setQueryIndex( "idx_emis_server_aggregation_pop_year_7754_v1")
+                .groupBy( "year", "year")
+                .groupBy("state_code", "state_code")
+                .sum( "co2", "co2")
+                .sum( "co2_catipa", "co2_catipa")
                 .addGeneric(Data.class);
         List<Data> list =  basedQueryES.query(wrapper);
         return list;
