@@ -85,6 +85,14 @@ public class TestEntity implements Serializable {
 
 }
 ```
+### 4.编写Mapper接口
+
+```java
+@EsRepository
+public interface TestMapper extends BaseMapper<TestEntity> {
+
+}
+```
 ## MySQL Simple-Es and Es syntax comparison table
 |    MySQL    | 	Simple-Es |    Es-DSL/Es java api     |
 |:-----------:|:----------:|:-------------------------:|
