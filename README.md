@@ -26,6 +26,10 @@ simple-Es -- 父工程
 |      Lombok      |  Lombok 简化对象封装工具   |
 |      Hutool      |     Hutool 工具类     |
 |     Swagger      |    Swagger 接口文档    |
+|     Mybatis      |     Mybatis ORM框架     |
+|     Mybatis-Plus |   Mybatis-Plus ORM框架   |
+|     HikariCP     |     HikariCP 连接池     |
+|      Log4j2      |      Log4j2 日志框架     |
 
 
 
