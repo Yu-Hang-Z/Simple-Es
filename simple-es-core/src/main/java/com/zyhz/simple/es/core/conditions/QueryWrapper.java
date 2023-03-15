@@ -25,6 +25,10 @@ public class QueryWrapper<T> extends EsBasedQuery
         return new QueryWrapper();
     }
 
+    public QueryWrapper<T> index(String index){
+        this.setIndex(index);
+        return this;
+    }
     @Override
     public QueryWrapper<T> ne(boolean condition, String column, Object field) {
         if (condition){
