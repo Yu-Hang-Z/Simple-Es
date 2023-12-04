@@ -1,4 +1,4 @@
-package com.zyhz.simple.es.common.utils;
+package com.zyhz.simple.es.annotation.utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
