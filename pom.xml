@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
 
     <groupId>cn.easy-es</groupId>
-    <artifactId>easy-es</artifactId>
+    <artifactId>simple-es</artifactId>
     <version>1.0.0</version>
 
     <name>easy-es</name>

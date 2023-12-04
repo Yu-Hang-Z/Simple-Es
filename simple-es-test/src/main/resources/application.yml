@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: simple-es-test
+
+  elasticsearch:
+    uris: http://10.8.0.176:9200

@@ -6,7 +6,7 @@ spring:
   application:
     name : simple-es-sample
   elasticsearch:
-    uris: http://10.10.18.10:9200
+    uris: http://10.8.0.176:9200
 
   jackson:
     time-zone: GMT+8

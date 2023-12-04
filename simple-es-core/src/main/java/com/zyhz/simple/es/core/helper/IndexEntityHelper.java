@@ -37,7 +37,7 @@ public class IndexEntityHelper implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         // 扫描所有带有 @IndexName 注解的类
         // todo 为什么要扫描所有带有 @IndexName 注解的类？，如何扫描进去的？
-        Set<Class<?>> classes = AnnotationUtils.getClassesWithAnnotation(null, IndexName.class);
+        Set<Class<?>> classes = AnnotationUtils.getClassesWithAnnotation("", IndexName.class);
         for (Class<?> clazz : classes) {
             if (clazz.isAnnotationPresent(IndexName.class)) {
                 String indexName = clazz.getAnnotation(IndexName.class).value();
